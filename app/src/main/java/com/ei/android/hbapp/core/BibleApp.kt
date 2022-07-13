@@ -11,6 +11,12 @@ import com.ei.android.hbapp.data.cache.RealmProvider
 import com.ei.android.hbapp.data.net.BookCloudMapper
 import com.ei.android.hbapp.data.net.BookService
 import retrofit2.Retrofit
+import androidx.lifecycle.ViewModel
+import com.ei.android.hbapp.domain.BaseBooksDomainToUiMapper
+import com.ei.android.hbapp.domain.BooksInteractor
+import com.ei.android.hbapp.presentation.BooksCommunication
+import com.ei.android.hbapp.presentation.MainViewModel
+import com.ei.android.hbapp.presentation.ResourceProvider
 
 class BibleApp:Application() {
 
@@ -18,6 +24,7 @@ class BibleApp:Application() {
         private val BASE_URL = "https://bible-go-api.rkeplin.com/v1/"
     }
 
+    lateinit var mainViewModel: MainViewModel
     override fun onCreate() {
         super.onCreate()
 
@@ -38,5 +45,8 @@ class BibleApp:Application() {
             cacheDataSource,
             booksCloudMapper,
             booksCacheMapper)
+        val booksInteractor = BooksInteractor.Base(booksRepository)
+
+        mainViewModel = MainViewModel(BooksCommunication.Base(),booksInteractor,BaseBooksDomainToUiMapper(BooksCommunication.Base(),ResourceProvider.Base(this)))
     }
 }
