@@ -2,7 +2,6 @@ package com.ei.android.hbapp.domain
 
 import com.ei.android.hbapp.data.BooksDataToDomainMapper
 import com.ei.android.hbapp.data.BooksRepository
-import com.ei.android.hbapp.presentation.BooksUI
 
 interface BooksInteractor {
 

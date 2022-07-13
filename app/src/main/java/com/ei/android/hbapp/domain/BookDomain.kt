@@ -2,7 +2,7 @@ package com.ei.android.hbapp.domain
 
 import com.ei.android.hbapp.core.Abstract
 import com.ei.android.hbapp.core.Book
-import com.ei.android.hbapp.presentation.BooksUI
+import com.ei.android.hbapp.presentation.BooksUi
 import retrofit2.HttpException
 import java.lang.Exception
 import java.net.UnknownHostException
@@ -10,7 +10,7 @@ import java.net.UnknownHostException
 /**
  * to rename to BooksDomain by lead
  */
-sealed class BookDomain: Abstract.Object<BooksUI, BooksDomainToUiMapper>() {
+sealed class BookDomain: Abstract.Object<BooksUi, BooksDomainToUiMapper>() {
     class Success(private val books:List<Book>):BookDomain() {
         override fun map(mapper: BooksDomainToUiMapper) = mapper.map(books)
     }

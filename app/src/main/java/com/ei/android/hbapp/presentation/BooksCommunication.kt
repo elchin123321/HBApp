@@ -9,10 +9,10 @@ interface BooksCommunication {
     fun show(books: List<Book>)
     fun show(errorMessage: String)
 
-    fun observeSuccess(owner: LifecycleOwner,observer: Observer<List<Book>>)
-    fun observeFail(owner: LifecycleOwner,observer: Observer<String>)
+    fun observeSuccess(owner: LifecycleOwner, observer: Observer<List<Book>>)
+    fun observeFail(owner: LifecycleOwner, observer: Observer<String>)
 
-    class Base:BooksCommunication{
+    class Base : BooksCommunication {
         private val successLiveData = MutableLiveData<List<Book>>()
         private val failLiveData = MutableLiveData<String>()
 
@@ -25,12 +25,11 @@ interface BooksCommunication {
         }
 
         override fun observeSuccess(owner: LifecycleOwner, observer: Observer<List<Book>>) {
-            successLiveData.observe(owner,observer)
+            successLiveData.observe(owner, observer)
         }
 
         override fun observeFail(owner: LifecycleOwner, observer: Observer<String>) {
-            failLiveData.observe(owner,observer)
+            failLiveData.observe(owner, observer)
         }
-
     }
 }
