@@ -20,7 +20,7 @@ class AbstractTest{
         assertTrue(domainObject is DomainObject.Failure)
     }
 
-    private sealed class TestDataObject : Abstract.Object<DomainObject,DataToDomainMapper>() {
+    private sealed class TestDataObject : Abstract.Object<DomainObject,DataToDomainMapper> {
         abstract override fun map(mapper: DataToDomainMapper): DomainObject
 
         class Success(private val textOne:String,
@@ -54,7 +54,7 @@ class AbstractTest{
 
         }
     }
-    private sealed class  DomainObject:Abstract.Object<UiObject, DomainToUiMapper>(){
+    private sealed class  DomainObject:Abstract.Object<UiObject, DomainToUiMapper>{
         class Success(private val textCombined:String):DomainObject(){
             override fun map(mapper: DomainToUiMapper): UiObject {
                 TODO("Not yet implemented")
@@ -70,7 +70,7 @@ class AbstractTest{
     }
     private interface DomainToUiMapper:Abstract.Mapper
 
-    private sealed class UiObject:Abstract.Object<Unit, Abstract.Mapper>()
+    private sealed class UiObject:Abstract.Object<Unit, Abstract.Mapper>
 }
 
 

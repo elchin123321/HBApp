@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.ei.android.hbapp.core.BibleApp
-import com.ei.android.hbapp.core.Book
 import com.ei.android.hbapp.presentation.BibleAdapter
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +14,11 @@ class MainActivity : AppCompatActivity() {
         val viewModel = (application as BibleApp).mainViewModel
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val adapter = BibleAdapter()
+        val adapter = BibleAdapter(object:BibleAdapter.Retry{
+            override fun tryAgain() {
+                viewModel.fetchBooks()
+            }
+        })
         recyclerView.adapter = adapter
 
         viewModel.observe(this, {

@@ -3,32 +3,38 @@ package com.ei.android.hbapp.presentation
 
 import com.ei.android.hbapp.core.Abstract
 import com.ei.android.hbapp.R
-import com.ei.android.hbapp.core.Book
+import com.ei.android.hbapp.domain.BookDomain
+import com.ei.android.hbapp.domain.BookDomainToUiMapper
 import com.ei.android.hbapp.domain.ErrorType
 
 
 
-sealed class BooksUi : Abstract.Object<Unit, Abstract.Mapper.Empty>() {
+sealed class BooksUi : Abstract.Object<Unit, BooksCommunication> {
 
     class Success(
-        private val communication: BooksCommunication,
-        private val books: List<Book>
+        private val books: List<BookDomain>,
+        private val bookMapper:BookDomainToUiMapper
     ) : BooksUi() {
-        override fun map(mapper: Abstract.Mapper.Empty) = communication.show(books)
+        override fun map(mapper: BooksCommunication) {
+            val booksUi = books.map{
+                it.map(bookMapper)
+            }
+            mapper.map(booksUi)
+        }
     }
 
     class Fail(
-        private val communication: BooksCommunication,
         private val errorType: ErrorType,
-        private val resourceProvider: ResourceProvider //ErrorTypeHandler
+        private val resourceProvider: ResourceProvider
     ) : BooksUi() {
-        override fun map(mapper: Abstract.Mapper.Empty) {
-            val messageId = when (errorType) { //todo move to other class
+        override fun map(mapper: BooksCommunication) {
+            val messageId = when (errorType) {
                 ErrorType.NO_CONNECTION -> R.string.no_connection
                 ErrorType.SERVICE_UNAVAILABLE -> R.string.service_unaviable
                 else -> R.string.something_went_wrong
             }
-            communication.show(resourceProvider.getString(messageId))
+            val message = resourceProvider.getString(messageId)
+            mapper.map(listOf(BookUi.Fail(message)))
         }
 
     }

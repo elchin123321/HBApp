@@ -2,7 +2,9 @@ package com.ei.android.hbapp.data
 
 import com.ei.android.hbapp.data.cache.BooksCacheDataSource
 import com.ei.android.hbapp.data.cache.BooksCacheMapper
+import kotlinx.coroutines.delay
 import java.lang.Exception
+import java.net.UnknownHostException
 
 interface BooksRepository {
 
@@ -15,6 +17,7 @@ interface BooksRepository {
         private val booksCacheMapper: BooksCacheMapper
     ) : BooksRepository{
         override suspend fun fetchBooks() = try {
+            delay(2000)
             val booksCacheList = cacheDataSource.fetchBooks()
             if(booksCacheList.isEmpty()) {
                 val booksCloudList = cloudDataSource.fetchBooks()

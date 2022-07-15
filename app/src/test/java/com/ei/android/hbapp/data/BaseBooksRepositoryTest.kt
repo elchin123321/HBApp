@@ -6,12 +6,12 @@ import com.ei.android.hbapp.data.cache.BookDB
 import com.ei.android.hbapp.data.net.BookCloudMapper
 
 open class BaseBooksRepositoryTest {
-    protected class TestBookCacheMapper: BookCacheMapper {
-        override fun map(bookdb: BookDB) = Book(bookdb.id, bookdb.name)
+    protected class TestBookCacheMapper: ToBookMapper {
+        override fun map(id: Int, name: String) = Book(id, name)
 
     }
 
-    protected class TestBookCloudMapper: BookCloudMapper {
+    protected class TestBookCloudMapper: ToBookMapper {
         override fun map(id: Int, name: String) = Book(id,name)
     }
 }
