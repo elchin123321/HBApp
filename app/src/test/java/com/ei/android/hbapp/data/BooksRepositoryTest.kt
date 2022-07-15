@@ -1,12 +1,9 @@
 package com.ei.android.hbapp.data
 
-import com.ei.android.hbapp.core.Book
-import com.ei.android.hbapp.data.cache.BookCacheMapper
 import com.ei.android.hbapp.data.cache.BookDB
 import com.ei.android.hbapp.data.cache.BooksCacheDataSource
 import com.ei.android.hbapp.data.cache.BooksCacheMapper
 import com.ei.android.hbapp.data.net.BookCloud
-import com.ei.android.hbapp.data.net.BookCloudMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
@@ -49,9 +46,9 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(
             listOf(
-                Book(0,"name0"),
-                Book(1,"name1"),
-                Book(2,"name2")
+                BookData(0,"name0","ot"),
+                BookData(1,"name1","ot"),
+                BookData(2,"name2","ot")
             )
         )
         assertEquals(expected,actual)
@@ -71,9 +68,9 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(
             listOf(
-                Book(10,"name10"),
-                Book(11,"name11"),
-                Book(12,"name12")
+                BookData(10,"name10","ot"),
+                BookData(11,"name11","ot"),
+                BookData(12,"name12","ot")
             )
         )
         assertEquals(expected,actual)
@@ -93,9 +90,9 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
         val actual = repository.fetchBooks()
         val expected = BooksData.Success(
             listOf(
-                Book(10,"name10"),
-                Book(11,"name11"),
-                Book(12,"name12")
+                BookData(10,"name10","ot"),
+                BookData(11,"name11","ot"),
+                BookData(12,"name12","ot")
             )
         )
         assertEquals(expected,actual)
@@ -128,7 +125,7 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
             }
         }
 
-        override fun saveBooks(books: List<Book>) {
+        override fun saveBooks(books: List<BookData>) {
             //todo
         }
 
@@ -140,9 +137,9 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
         override suspend fun fetchBooks(): List<BookCloud> {
             if(returnSuccess){
                 return listOf(
-                    BookCloud(0,"name0"),
-                    BookCloud(1,"name1"),
-                    BookCloud(2,"name2")
+                    BookCloud(0,"name0","ot"),
+                    BookCloud(1,"name1","ot"),
+                    BookCloud(2,"name2","ot")
                 )
             }else{
                 if(errorTypeNoConnection) {

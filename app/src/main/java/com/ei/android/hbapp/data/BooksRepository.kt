@@ -17,7 +17,6 @@ interface BooksRepository {
         private val booksCacheMapper: BooksCacheMapper
     ) : BooksRepository{
         override suspend fun fetchBooks() = try {
-            delay(2000)
             val booksCacheList = cacheDataSource.fetchBooks()
             if(booksCacheList.isEmpty()) {
                 val booksCloudList = cloudDataSource.fetchBooks()

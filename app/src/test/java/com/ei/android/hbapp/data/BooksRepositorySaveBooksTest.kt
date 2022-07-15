@@ -1,17 +1,12 @@
 package com.ei.android.hbapp.data
 
-import com.ei.android.hbapp.core.Book
-import com.ei.android.hbapp.data.cache.BookCacheMapper
 import com.ei.android.hbapp.data.cache.BookDB
 import com.ei.android.hbapp.data.cache.BooksCacheDataSource
 import com.ei.android.hbapp.data.cache.BooksCacheMapper
 import com.ei.android.hbapp.data.net.BookCloud
-import com.ei.android.hbapp.data.net.BookCloudMapper
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import java.io.IOException
 
 class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
 
@@ -29,8 +24,8 @@ class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
         val actualCloud = repository.fetchBooks()
         val expectedCloud = BooksData.Success(
             listOf(
-                Book(0,"name0"),
-                Book(1,"name1")
+                BookData(0,"name0","ot"),
+                BookData(1,"name1","ot")
             )
         )
 
@@ -39,8 +34,8 @@ class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
         val actualCache = repository.fetchBooks()
         val expectedCache = BooksData.Success(
             listOf(
-                Book(0,"name0 db"),
-                Book(1,"name1 db")
+                BookData(0,"name0 db","ot"),
+                BookData(1,"name1 db","ot")
             )
         )
 
@@ -52,8 +47,8 @@ class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
     private inner class TestBooksCloudDataSource: BooksCloudDataSource {
         override suspend fun fetchBooks(): List<BookCloud> {
             return listOf(
-                BookCloud(0,"name0"),
-                BookCloud(1,"name1")
+                BookCloud(0,"name0","ot"),
+                BookCloud(1,"name1","ot")
             )
 
         }
@@ -67,11 +62,10 @@ class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
             return list
         }
 
-        override fun saveBooks(books: List<Book>) {
+        override fun saveBooks(books: List<BookData>) {
             books.map{book->
                 list.add(BookDB().apply {
-                    this.id = book.id
-                    this.name = "${book.name} db"
+                    //this = book.mapTo()
                 })
 
             }

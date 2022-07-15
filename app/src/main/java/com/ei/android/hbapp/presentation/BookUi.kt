@@ -7,12 +7,23 @@ sealed class BookUi:Abstract.Object<Unit,BookUi.StringMapper> {
 
     object Progress: BookUi()
 
-    class Base(
+
+    open class Info(
         private val id:Int, //todo use for getting chapters
         private val name:String
     ):BookUi(){
         override fun map(mapper: StringMapper) = mapper.map(name)
     }
+
+    class Base(
+        private val id:Int, //todo use for getting chapters
+        private val name:String
+    ):Info(id, name)
+
+    class Testament(
+        private val id:Int, //todo use for getting chapters
+        private val name:String
+    ):Info(id, name)
 
     class Fail(
         private val message:String

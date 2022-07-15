@@ -4,6 +4,8 @@ import com.ei.android.hbapp.core.Abstract
 import com.ei.android.hbapp.data.BookData
 import com.ei.android.hbapp.data.BookDataToDomainMapper
 import com.ei.android.hbapp.data.BooksDataToDomainMapper
+import com.ei.android.hbapp.data.TestamentTemp
+import com.ei.android.hbapp.presentation.BookUi
 import com.ei.android.hbapp.presentation.BooksUi
 import retrofit2.HttpException
 import java.lang.Exception
@@ -18,10 +20,21 @@ sealed class BooksDomain: Abstract.Object<BooksUi, BooksDomainToUiMapper> {
         private val bookMapper: BookDataToDomainMapper
     ):BooksDomain() {
         override fun map(mapper: BooksDomainToUiMapper):BooksUi {
-            val booksDomain = books.map{
-                it.map(bookMapper)
+            val data = mutableListOf<BookDomain>()
+            var temp = TestamentTemp.Base()
+            books.forEach{bookData ->
+                if (!bookData.compare(temp)){
+                    if(temp.isEmpty())
+                        data.add(BookDomain.Testament(BookDomain.TestamentType.OLD))
+                    else
+                        data.add(BookDomain.Testament(BookDomain.TestamentType.NEW))
+                    bookData.saveTestament(temp)
+                }
+                data.add(bookData.map(bookMapper))
+
             }
-            return mapper.map(booksDomain)
+
+            return mapper.map(data)
         }
     }
 
