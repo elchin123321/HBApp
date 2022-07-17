@@ -77,7 +77,7 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
     }
 
     @Test
-    fun test_cloud_success_with_cache() = runBlocking {
+     fun test_cloud_success_with_cache() = runBlocking {
         val testCloudDataSource = TestBooksCloudDataSource(returnSuccess = true)
         val testCacheDataSource = TestBooksCacheDataSource(returnSuccess = true)
         val repository = BooksRepository.Base(

@@ -29,7 +29,7 @@ class BooksDomainTest{
 
         val actual = domain.map(object :BooksDomainToUiMapper{
             override fun map(books: List<BookDomain>): BooksUi {
-               return BooksUi.Success(books,bookMapper)
+               return BooksUi.Base(books,bookMapper)
             }
 
             override fun map(errorType: ErrorType): BooksUi {
@@ -38,11 +38,11 @@ class BooksDomainTest{
 
         })
 
-        val expected = BooksUi.Success(
+        val expected = BooksUi.Base(
             listOf(
-                BookDomain.Testament(BookDomain.TestamentType.OLD),
+                BookDomain.Testament(TestamentType.OLD),
                 BookDomain.Base(1, "genesis"),
-                BookDomain.Testament(BookDomain.TestamentType.NEW),
+                BookDomain.Testament(TestamentType.NEW),
                 BookDomain.Base(66, "Revelation")
         ), bookMapper
         )
