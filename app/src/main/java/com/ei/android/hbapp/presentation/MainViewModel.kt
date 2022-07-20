@@ -14,7 +14,8 @@ import java.security.acl.Owner
 class MainViewModel(
     private val booksInteractor: BooksInteractor,
     private val mapper: BooksDomainToUiMapper,
-    private val communication: BooksCommunication
+    private val communication: BooksCommunication,
+    private val uiDataCache:UiDataCache
 ) : ViewModel() { //todo interface
 
     fun fetchBooks() {
@@ -22,6 +23,7 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val resultDomain = booksInteractor.fetchBooks()
             val resultUi = resultDomain.map(mapper)
+            resultUi.cache(uiDataCache)
             withContext(Dispatchers.Main) {
                 resultUi.map(communication)
             }
@@ -30,5 +32,9 @@ class MainViewModel(
 
     fun observe(owner: LifecycleOwner, observer: Observer<List<BookUi>>) {
         communication.observe(owner, observer)
+    }
+
+    fun collapseOrExpand(id:Int){
+        communication.map(uiDataCache.changeState(id))
     }
 }

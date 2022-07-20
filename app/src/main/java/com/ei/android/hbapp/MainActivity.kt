@@ -19,6 +19,10 @@ class MainActivity : AppCompatActivity() {
             override fun tryAgain() {
                 viewModel.fetchBooks()
             }
+        },object:BibleAdapter.CollapseListener{
+            override fun collapseOrExpand(id: Int) {
+                viewModel.collapseOrExpand(id)
+            }
         })
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))

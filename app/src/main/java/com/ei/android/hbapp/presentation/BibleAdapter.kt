@@ -4,18 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ei.android.hbapp.R
 
-class BibleAdapter(private val retry: Retry): RecyclerView.Adapter<BibleAdapter.BibleViewHolder>() {
+class BibleAdapter(private val retry: Retry,private val collapse: CollapseListener): RecyclerView.Adapter<BibleAdapter.BibleViewHolder>() {
 
     private val books = ArrayList<BookUi>()
 
     fun update(new: List<BookUi>) {
+        val diffUtilCallback = DiffUtilCallback(books,new)
+        val result = DiffUtil.calculateDiff(diffUtilCallback)
         books.clear()
         books.addAll(new)
-        notifyDataSetChanged()
+        result.dispatchUpdatesTo(this)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -33,7 +37,7 @@ class BibleAdapter(private val retry: Retry): RecyclerView.Adapter<BibleAdapter.
         when(viewType) {
                 0 -> BibleViewHolder.Base(R.layout.book_layout.makeView(parent))
                 1 -> BibleViewHolder.Fail(R.layout.fail_fullscreen.makeView(parent), retry)
-                2 -> BibleViewHolder.Base(R.layout.testament.makeView(parent))
+                2 -> BibleViewHolder.Testament(R.layout.testament.makeView(parent),collapse)
                 else ->  BibleViewHolder.FullScreenProgress(R.layout.progress_fullscreen.makeView(parent))
             }
 
@@ -47,16 +51,39 @@ class BibleAdapter(private val retry: Retry): RecyclerView.Adapter<BibleAdapter.
         open fun bind(book: BookUi) {
         }
 
-        class FullScreenProgress(view: View):BibleViewHolder(view){
+        class FullScreenProgress(view: View):BibleViewHolder(view)
 
-        }
-        class Base(view: View):BibleViewHolder(view){
+        abstract class Info(view: View):BibleViewHolder(view){
             private val name = itemView.findViewById<TextView>(R.id.textView)
             override fun bind(book: BookUi) {
                 book.map(object : BookUi.StringMapper{
                     override fun map(text: String) {
                         name.text = text
                     }
+                })
+            }
+        }
+
+        class Base(view: View):Info(view)
+
+        class Testament(view:View,private val  collapse:CollapseListener):Info(view){
+            private val collapseView = itemView.findViewById<ImageView>(R.id.collapseView)
+            override fun bind(book: BookUi) {
+                super.bind(book)
+                itemView.setOnClickListener{
+                    book.collapseOrExpand(collapse)
+                }
+                book.showCollapsed(object : BookUi.CollapseMapper{
+                    override fun show(collapsed: Boolean) {
+                        val iconId = if(collapsed){
+                            R.drawable.ic_expand_more
+                        }else{
+                            R.drawable.ic_expand_less
+                        }
+                        collapseView.setImageResource(iconId)
+                    }
+
+
                 })
             }
         }
@@ -78,6 +105,9 @@ class BibleAdapter(private val retry: Retry): RecyclerView.Adapter<BibleAdapter.
     }
     interface Retry {
         fun tryAgain()
+    }
+    interface CollapseListener{
+        fun collapseOrExpand(id:Int)
     }
 }
 
