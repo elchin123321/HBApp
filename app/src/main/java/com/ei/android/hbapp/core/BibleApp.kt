@@ -64,6 +64,6 @@ class BibleApp:Application() {
             booksInteractor,
             BaseBooksDomainToUiMapper(resourceProvider,BaseBookDomainToUiMapper(resourceProvider)),
             communication,
-            UiDataCache.Base())
+            UiDataCache.Base(IdCache.Base(this)))
     }
 }

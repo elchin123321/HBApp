@@ -3,15 +3,13 @@ package com.ei.android.hbapp.presentation
 import com.ei.android.hbapp.core.Abstract
 import com.ei.android.hbapp.core.Matcher
 
-sealed class BookUi:Abstract.Object<Unit,BookUi.StringMapper>, Matcher<Int> {
+sealed class BookUi:Abstract.Object<Unit,BookUi.StringMapper>, Matcher<Int>, Collapsing, Comparing {
     override fun map(mapper: StringMapper) = Unit
-    open fun collapseOrExpand(listener: BibleAdapter.CollapseListener) = Unit
-    open fun showCollapsed(mapper:CollapseMapper) = Unit
+
     override fun matches(arg: Int) = false
-    open fun changeState():BookUi = BookUi.Progress
-    open fun isCollapsed():Boolean = false
-    open fun sameContent(bookUi: BookUi) = false
-    open fun same(bookUi: BookUi) = false
+    open fun changeState():BookUi = Progress
+
+    open fun saveId(cache: IdCache) = Unit
 
     object Progress: BookUi()
 
@@ -52,6 +50,10 @@ sealed class BookUi:Abstract.Object<Unit,BookUi.StringMapper>, Matcher<Int> {
         override fun changeState() = Testament(id,name, !collapsed)
         override fun isCollapsed() = collapsed
 
+        override fun saveId(cache: IdCache) {
+                cache.save(id)
+        }
+
 
     }
 
@@ -73,4 +75,15 @@ sealed class BookUi:Abstract.Object<Unit,BookUi.StringMapper>, Matcher<Int> {
     interface CollapseMapper: Abstract.Mapper{
         fun show(collapsed: Boolean)
     }
+}
+
+interface Collapsing{
+     fun collapseOrExpand(listener: BibleAdapter.CollapseListener) = Unit
+     fun showCollapsed(mapper: BookUi.CollapseMapper) = Unit
+     fun isCollapsed():Boolean = false
+}
+
+interface Comparing{
+     fun sameContent(bookUi: BookUi) = false
+     fun same(bookUi: BookUi) = false
 }

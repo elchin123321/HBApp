@@ -23,9 +23,9 @@ class MainViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             val resultDomain = booksInteractor.fetchBooks()
             val resultUi = resultDomain.map(mapper)
-            resultUi.cache(uiDataCache)
+            val actual = resultUi.cache(uiDataCache)
             withContext(Dispatchers.Main) {
-                resultUi.map(communication)
+                actual.map(communication)
             }
         }
     }
@@ -37,4 +37,11 @@ class MainViewModel(
     fun collapseOrExpand(id:Int){
         communication.map(uiDataCache.changeState(id))
     }
+
+    fun saveCollapsedStates() {
+        uiDataCache.saveState()
+
+    }
+
+
 }
