@@ -1,6 +1,7 @@
 package com.ei.android.hbapp.data
 
-import com.ei.android.hbapp.data.cache.BookDB
+import com.ei.android.hbapp.data.books.BookData
+import com.ei.android.hbapp.data.books.ToBookMapper
 
 open class BaseBooksRepositoryTest {
     protected class TestBookCacheMapper: ToBookMapper {

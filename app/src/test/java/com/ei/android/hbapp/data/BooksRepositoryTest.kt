@@ -1,9 +1,12 @@
 package com.ei.android.hbapp.data
 
-import com.ei.android.hbapp.data.cache.BookDB
-import com.ei.android.hbapp.data.cache.BooksCacheDataSource
-import com.ei.android.hbapp.data.cache.BooksCacheMapper
-import com.ei.android.hbapp.data.net.BookCloud
+import com.ei.android.hbapp.data.books.*
+import com.ei.android.hbapp.data.books.cache.BookDb
+import com.ei.android.hbapp.data.books.cache.BooksCacheDataSource
+import com.ei.android.hbapp.data.books.cache.BooksCacheMapper
+import com.ei.android.hbapp.data.books.cloud.BookCloud
+import com.ei.android.hbapp.data.books.cloud.BooksCloudDataSource
+import com.ei.android.hbapp.data.books.cloud.BooksCloudMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
@@ -103,18 +106,18 @@ class BooksRepositoryTest:BaseBooksRepositoryTest(){
         private val returnSuccess: Boolean
     ): BooksCacheDataSource {
 
-        override fun fetchBooks(): List<BookDB> {
+        override fun fetchBooks(): List<BookDb> {
             return if(returnSuccess){
                 return listOf(
-                    BookDB().apply {
+                    BookDb().apply {
                         id = 10
                         name = "name10"
                     },
-                    BookDB().apply {
+                    BookDb().apply {
                         id = 11
                         name = "name11"
                     },
-                    BookDB().apply {
+                    BookDb().apply {
                         id = 12
                         name = "name12"
                     }

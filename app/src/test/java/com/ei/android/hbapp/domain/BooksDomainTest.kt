@@ -1,9 +1,10 @@
 package com.ei.android.hbapp.domain
 
-import com.ei.android.hbapp.data.BookData
-import com.ei.android.hbapp.data.BookDataToDomainMapper
-import com.ei.android.hbapp.presentation.BookUi
-import com.ei.android.hbapp.presentation.BooksUi
+import com.ei.android.hbapp.data.books.BookData
+import com.ei.android.hbapp.data.books.BookDataToDomainMapper
+import com.ei.android.hbapp.domain.books.*
+import com.ei.android.hbapp.presentation.books.BookUi
+import com.ei.android.hbapp.presentation.books.BooksUi
 import org.junit.Assert.*
 import org.junit.Test
 import java.lang.IllegalStateException
@@ -22,12 +23,12 @@ class BooksDomainTest{
             BookData(1,"genesis","ot"),
             BookData(66,"Revelation","nt"),
         ),
-        object :BookDataToDomainMapper{
+        object : BookDataToDomainMapper {
             override fun map(id: Int, name: String, testament: String) = BookDomain.Base(id,name)
 
         })
 
-        val actual = domain.map(object :BooksDomainToUiMapper{
+        val actual = domain.map(object : BooksDomainToUiMapper {
             override fun map(books: List<BookDomain>): BooksUi {
                return BooksUi.Base(books,bookMapper)
             }

@@ -1,9 +1,12 @@
 package com.ei.android.hbapp.data
 
-import com.ei.android.hbapp.data.cache.BookDB
-import com.ei.android.hbapp.data.cache.BooksCacheDataSource
-import com.ei.android.hbapp.data.cache.BooksCacheMapper
-import com.ei.android.hbapp.data.net.BookCloud
+import com.ei.android.hbapp.data.books.*
+import com.ei.android.hbapp.data.books.cache.BookDb
+import com.ei.android.hbapp.data.books.cache.BooksCacheDataSource
+import com.ei.android.hbapp.data.books.cache.BooksCacheMapper
+import com.ei.android.hbapp.data.books.cloud.BookCloud
+import com.ei.android.hbapp.data.books.cloud.BooksCloudDataSource
+import com.ei.android.hbapp.data.books.cloud.BooksCloudMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -57,14 +60,14 @@ class BooksRepositorySaveBooksTest :BaseBooksRepositoryTest(){
 
     private inner class TestBooksCacheDataSource: BooksCacheDataSource {
 
-        private val list = ArrayList<BookDB>()
-        override fun fetchBooks(): List<BookDB> {
+        private val list = ArrayList<BookDb>()
+        override fun fetchBooks(): List<BookDb> {
             return list
         }
 
         override fun saveBooks(books: List<BookData>) {
             books.map{book->
-                list.add(BookDB().apply {
+                list.add(BookDb().apply {
                     //this = book.mapTo()
                 })
 

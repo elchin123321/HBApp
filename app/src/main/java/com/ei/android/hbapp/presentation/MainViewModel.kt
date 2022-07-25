@@ -4,44 +4,35 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ei.android.hbapp.domain.BooksDomainToUiMapper
-import com.ei.android.hbapp.domain.BooksInteractor
+import com.ei.android.hbapp.core.Read
+import com.ei.android.hbapp.domain.books.BooksDomainToUiMapper
+import com.ei.android.hbapp.domain.books.BooksInteractor
+import com.ei.android.hbapp.presentation.books.BookUi
+import com.ei.android.hbapp.presentation.books.BooksCommunication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.security.acl.Owner
 
 class MainViewModel(
-    private val booksInteractor: BooksInteractor,
-    private val mapper: BooksDomainToUiMapper,
-    private val communication: BooksCommunication,
-    private val uiDataCache:UiDataCache
-) : ViewModel() { //todo interface
+    private val navigator: Read<Int>,
+    private val communication: NavigationCommunication
+) : ViewModel() {
 
-    fun fetchBooks() {
-        communication.map(listOf(BookUi.Progress))
-        viewModelScope.launch(Dispatchers.IO) {
-            val resultDomain = booksInteractor.fetchBooks()
-            val resultUi = resultDomain.map(mapper)
-            val actual = resultUi.cache(uiDataCache)
-            withContext(Dispatchers.Main) {
-                actual.map(communication)
-            }
-        }
+    fun init() {
+        communication.map(navigator.read())
     }
 
-    fun observe(owner: LifecycleOwner, observer: Observer<List<BookUi>>) {
+    fun observe(owner: LifecycleOwner, observer: Observer<Int>) {
         communication.observe(owner, observer)
     }
 
-    fun collapseOrExpand(id:Int){
-        communication.map(uiDataCache.changeState(id))
+    fun navigateBack(): Boolean {
+        val currentScreen = navigator.read()
+        val exit = currentScreen == 0
+        if (!exit) {
+            val newScreen = currentScreen - 1
+            communication.map(newScreen)
+        }
+        return exit
     }
-
-    fun saveCollapsedStates() {
-        uiDataCache.saveState()
-
-    }
-
-
 }

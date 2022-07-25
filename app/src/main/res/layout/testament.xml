@@ -2,28 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:background="@color/purple_200">
-    <TextView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/purple_200"
+    android:layout_height="wrap_content">
+
+    <com.ei.android.hbapp.core.CustomTextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Genesis"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:padding="@dimen/padding8"
-        android:textColor="@color/white"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
         android:gravity="end"
-        android:layout_gravity="center_vertical"/>
-    <ImageButton
+        android:padding="@dimen/padding8"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/white"
+        tools:text="Genesis" />
+
+    <com.ei.android.hbapp.core.CollapseView
         app:tint="@color/white"
-        tools:src="@drawable/ic_launcher_background"
         android:id="@+id/collapseView"
+        android:layout_gravity="center_vertical"
+        tools:src="@drawable/ic_launcher_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@null"
-        />
+        tools:ignore="ContentDescription" />
+
 </LinearLayout>
